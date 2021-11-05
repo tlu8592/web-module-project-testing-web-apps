@@ -6,19 +6,19 @@ import userEvent from '@testing-library/user-event';
 import ContactForm from './ContactForm';
 
 test('renders without errors', ()=>{
-    render(<ContactForm />)
+    render(<ContactForm />);
 });
 
 test('renders the contact form header', ()=> {
-    render(<ContactForm />)
+    render(<ContactForm />);
 
-    const header = screen.getByText(/contact form/i)
+    const header = screen.getByText(/contact form/i);
 
     expect(header).toBeInTheDocument();
 });
 
 test('renders ONE error message if user enters less than 5 characters into firstname.', async () => {
-    render(<ContactForm />)
+    render(<ContactForm />);
 
     const firstNameInput = screen.queryByPlaceholderText('Edd');
     userEvent.type(firstNameInput, 'Edd');
@@ -28,14 +28,14 @@ test('renders ONE error message if user enters less than 5 characters into first
 });
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {
-    render(<ContactForm />)
+    render(<ContactForm />);
 
     const submitBtn = screen.queryByRole('button');
     userEvent.click(submitBtn);
 
     const firstNameError = screen.queryByText(/must have at least 5 characters/i);
     const lastNameError = screen.queryByText(/lastname is a required field/i);
-    const emailError = screen.queryByText(/must be a valid email address/i)
+    const emailError = screen.queryByText(/must be a valid email address/i);
 
     expect(firstNameError).toBeInTheDocument();
     expect(lastNameError).toBeInTheDocument();
@@ -43,7 +43,19 @@ test('renders THREE error messages if user enters no values into any fields.', a
 });
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
-    
+    render(<ContactForm />);
+
+    const firstNameInput = screen.queryByPlaceholderText('Edd');
+    userEvent.type(firstNameInput, 'Ralph');
+
+    const lastNameInput = screen.queryByPlaceholderText('Burke');
+    userEvent.type(lastNameInput, 'Vaughn');
+
+    const submitBtn = screen.queryByRole('button');
+    userEvent.click(submitBtn);
+
+    const errorMessage = screen.queryByTestId("error");
+    expect(errorMessage).toBeInTheDocument();
 });
 
 test('renders "email must be a valid email address" if an invalid email is entered', async () => {
